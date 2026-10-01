@@ -1,11 +1,3 @@
-Absolutely. For your GitHub repository, I recommend a **professional but fresher-friendly README**: clear project purpose, features, architecture, folder structure, setup, API endpoints, authentication flow, screenshots section, and diagrams.
-
-You can directly copy the following into:
-
-```text
-README.md
-```
-
 # Customer Management System
 
 A full-stack **Customer Management System** built using **Spring Boot, React, MySQL, Spring Security, and JWT**. The application provides customer CRUD operations with authentication, role-based authorization, pagination, exception handling, and a responsive web interface.
