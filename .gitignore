@@ -1,0 +1,18 @@
+# Spring Boot
+CUST_CRUD/target/
+CUST_CRUD/.classpath
+CUST_CRUD/.project
+CUST_CRUD/.settings/
+
+# React
+CUST_UI/node_modules/
+CUST_UI/dist/
+
+# VS Code
+.vscode/
+
+# Files folder
+FILES/
+
+# Environment files
+.env
