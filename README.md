@@ -744,8 +744,8 @@ Example:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/crud_cms
-spring.datasource.username=root
-spring.datasource.password=YOUR_MYSQL_PASSWORD
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
