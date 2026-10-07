@@ -1,4 +1,3 @@
-```markdown
 # CUST_CRUD – Customer Management System
 
 A full-stack **Customer Management System** developed using **Spring Boot, React, MySQL, Spring Security, JWT, and Axios**.
