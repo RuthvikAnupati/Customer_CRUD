@@ -1287,5 +1287,5 @@ https://github.com/RuthvikAnupati/Customer_CRUD
 
 # 📄 License
 
-This project is created for **learning and educational purposes**.
+This project is created for **learning and educational purposes**
 ```
