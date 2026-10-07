@@ -60,7 +60,7 @@ function Login() {
                 "Login successful"
             );
 
-            navigate("/customers");
+            navigate("/");
 
         } catch (error) {
 
