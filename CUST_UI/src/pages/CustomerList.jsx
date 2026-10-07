@@ -6,6 +6,10 @@ function CustomerList() {
 
     const [customers, setCustomers] = useState([]);
     const [message, setMessage] = useState("");
+
+    const [searchId, setSearchId] = useState("");
+    const [showAll, setShowAll] = useState(false);
+
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
@@ -15,9 +19,23 @@ function CustomerList() {
     // Get logged-in user's role
     const role = localStorage.getItem("role");
 
+
+    // =================================
+    // LOAD ALL CUSTOMERS
+    // =================================
+
     useEffect(() => {
-        fetchCustomers(currentPage);
-    }, [currentPage]);
+
+        if (showAll) {
+            fetchCustomers(currentPage);
+        }
+
+    }, [currentPage, showAll]);
+
+
+    // =================================
+    // GET ALL CUSTOMERS WITH PAGINATION
+    // =================================
 
     const fetchCustomers = async (page) => {
 
@@ -29,19 +47,145 @@ function CustomerList() {
                 );
 
             setCustomers(response.data.content);
-            setTotalPages(response.data.totalPages);
-            setTotalElements(response.data.totalElements);
+
+            setTotalPages(
+                response.data.totalPages
+            );
+
+            setTotalElements(
+                response.data.totalElements
+            );
+
             setMessage("");
 
         } catch (error) {
 
             console.error(error);
 
+            setCustomers([]);
+            setTotalPages(0);
+            setTotalElements(0);
+
             setMessage(
                 "Unable to load customers."
             );
         }
     };
+
+
+    // =================================
+    // SEARCH CUSTOMER BY ID
+    // =================================
+
+    const handleSearch = async () => {
+
+        if (searchId.trim() === "") {
+
+            setMessage(
+                "Please enter a Customer ID."
+            );
+
+            return;
+        }
+
+        try {
+
+            const response =
+                await api.get(
+                    `/getCust/${searchId}`
+                );
+
+            setCustomers([
+                response.data
+            ]);
+
+            setTotalElements(1);
+            setTotalPages(1);
+            setCurrentPage(0);
+
+            // Search mode
+            setShowAll(false);
+
+            setMessage(
+                "Customer found successfully."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            setCustomers([]);
+            setTotalElements(0);
+            setTotalPages(0);
+
+            if (error.response) {
+
+                if (
+                    typeof error.response.data ===
+                    "string"
+                ) {
+
+                    setMessage(
+                        error.response.data
+                    );
+
+                } else {
+
+                    setMessage(
+                        error.response.data?.message ||
+                        "Customer not found."
+                    );
+                }
+
+            } else {
+
+                setMessage(
+                    "Unable to find customer."
+                );
+            }
+        }
+    };
+
+
+    // =================================
+    // VIEW ALL CUSTOMERS
+    // =================================
+
+    const handleViewAll = () => {
+
+        setSearchId("");
+
+        setMessage("");
+
+        setCurrentPage(0);
+
+        setShowAll(true);
+    };
+
+
+    // =================================
+    // CLEAR SEARCH / RESULT
+    // =================================
+
+    const handleClear = () => {
+
+        setSearchId("");
+
+        setCustomers([]);
+
+        setMessage("");
+
+        setTotalElements(0);
+        setTotalPages(0);
+        setCurrentPage(0);
+
+        setShowAll(false);
+    };
+
+
+    // =================================
+    // DELETE CUSTOMER
+    // =================================
 
     const handleDelete = async (cid) => {
 
@@ -56,13 +200,31 @@ function CustomerList() {
 
         try {
 
-            await api.delete(`/delCust/${cid}`);
+            await api.delete(
+                `/delCust/${cid}`
+            );
 
             setMessage(
                 "Customer deleted successfully."
             );
 
-            fetchCustomers(currentPage);
+            // If viewing all customers
+            if (showAll) {
+
+                fetchCustomers(
+                    currentPage
+                );
+
+            } else {
+
+                // If viewing one customer
+                setCustomers([]);
+
+                setTotalElements(0);
+                setTotalPages(0);
+
+                setSearchId("");
+            }
 
         } catch (error) {
 
@@ -70,10 +232,22 @@ function CustomerList() {
 
             if (error.response) {
 
-                setMessage(
-                    error.response.data?.message ||
-                    "Unable to delete customer."
-                );
+                if (
+                    typeof error.response.data ===
+                    "string"
+                ) {
+
+                    setMessage(
+                        error.response.data
+                    );
+
+                } else {
+
+                    setMessage(
+                        error.response.data?.message ||
+                        "Unable to delete customer."
+                    );
+                }
 
             } else {
 
@@ -83,6 +257,11 @@ function CustomerList() {
             }
         }
     };
+
+
+    // =================================
+    // PREVIOUS PAGE
+    // =================================
 
     const handlePrevious = () => {
 
@@ -94,9 +273,17 @@ function CustomerList() {
         }
     };
 
+
+    // =================================
+    // NEXT PAGE
+    // =================================
+
     const handleNext = () => {
 
-        if (currentPage < totalPages - 1) {
+        if (
+            currentPage <
+            totalPages - 1
+        ) {
 
             setCurrentPage(
                 currentPage + 1
@@ -104,165 +291,310 @@ function CustomerList() {
         }
     };
 
-return (
-    <div className="customer-container">
 
-        <div className="customer-header">
+    // =================================
+    // UI
+    // =================================
 
-            <h1>
-                Customers
-            </h1>
+    return (
 
-            {role === "ADMIN" && (
-                <Link to="/add-customer">
-                    <button className="add-button">
-                        + Add Customer
+        <div className="customer-container">
+
+
+            {/* =========================
+                HEADER
+            ========================== */}
+
+            <div className="customer-header">
+
+                <h1>
+                    Customers
+                </h1>
+
+
+                {role === "ADMIN" && (
+
+                    <Link to="/add-customer">
+
+                        <button className="add-button">
+                            + Add Customer
+                        </button>
+
+                    </Link>
+
+                )}
+
+            </div>
+
+
+            {/* =========================
+                SEARCH SECTION
+            ========================== */}
+
+            <div className="search-section">
+
+                <h2>
+                    Find Customer by ID
+                </h2>
+
+
+                <div className="search-box">
+
+                    <input
+                        type="number"
+                        min="1"
+                        placeholder="Enter Customer ID"
+                        value={searchId}
+                        onChange={(event) =>
+                            setSearchId(
+                                event.target.value
+                            )
+                        }
+                    />
+
+
+                    <button
+                        className="search-button"
+                        onClick={handleSearch}
+                    >
+                        Search
                     </button>
-                </Link>
+
+
+                    <button
+                        className="view-all-button"
+                        onClick={handleViewAll}
+                    >
+                        View All
+                    </button>
+
+
+                    <button
+                        className="clear-button"
+                        onClick={handleClear}
+                    >
+                        Clear
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            {/* =========================
+                MESSAGE
+            ========================== */}
+
+            {message && (
+
+                <p className="message">
+                    {message}
+                </p>
+
             )}
 
-        </div>
 
-        {message && (
-            <p className="message">
-                {message}
-            </p>
-        )}
+            {/* =========================
+                CUSTOMER TABLE
+            ========================== */}
 
-        <table className="customer-table">
+            {customers.length > 0 && (
 
-            <thead>
+                <table className="customer-table">
 
-                <tr>
+                    <thead>
 
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
+                        <tr>
 
-                    {role === "ADMIN" && (
-                        <th>Actions</th>
-                    )}
+                            <th>
+                                ID
+                            </th>
 
-                </tr>
+                            <th>
+                                Name
+                            </th>
 
-            </thead>
+                            <th>
+                                Product
+                            </th>
 
-            <tbody>
+                            <th>
+                                Price
+                            </th>
 
-                {customers.length > 0 ? (
+                            <th>
+                                Quantity
+                            </th>
 
-                    customers.map((customer) => (
-
-                        <tr key={customer.cid}>
-
-                            <td>
-                                {customer.cid}
-                            </td>
-
-                            <td>
-                                {customer.cname}
-                            </td>
-
-                            <td>
-                                {customer.productName}
-                            </td>
-
-                            <td>
-                                ₹{customer.price}
-                            </td>
-
-                            <td>
-                                {customer.quantity}
-                            </td>
 
                             {role === "ADMIN" && (
 
-                                <td>
+                                <th>
+                                    Actions
+                                </th>
 
-                                    <Link
-                                        to={`/edit-customer/${customer.cid}`}
-                                    >
-                                        <button className="edit-button">
-                                            Edit
-                                        </button>
-                                    </Link>
-
-                                    <button
-                                        className="delete-button"
-                                        onClick={() =>
-                                            handleDelete(
-                                                customer.cid
-                                            )
-                                        }
-                                    >
-                                        Delete
-                                    </button>
-
-                                </td>
                             )}
 
                         </tr>
 
-                    ))
+                    </thead>
 
-                ) : (
 
-                    <tr>
+                    <tbody>
 
-                        <td
-                            colSpan={
-                                role === "ADMIN"
-                                    ? "6"
-                                    : "5"
-                            }
-                        >
-                            No customers found.
-                        </td>
+                        {customers.map(
+                            (customer) => (
 
-                    </tr>
+                                <tr
+                                    key={
+                                        customer.cid
+                                    }
+                                >
+
+                                    <td>
+                                        {customer.cid}
+                                    </td>
+
+                                    <td>
+                                        {customer.cname}
+                                    </td>
+
+                                    <td>
+                                        {customer.productName}
+                                    </td>
+
+                                    <td>
+                                        ₹{customer.price}
+                                    </td>
+
+                                    <td>
+                                        {customer.quantity}
+                                    </td>
+
+
+                                    {role === "ADMIN" && (
+
+                                        <td>
+
+                                            <Link
+                                                to={`/edit-customer/${customer.cid}`}
+                                            >
+
+                                                <button
+                                                    className="edit-button"
+                                                >
+                                                    Edit
+                                                </button>
+
+                                            </Link>
+
+
+                                            <button
+                                                className="delete-button"
+                                                onClick={() =>
+                                                    handleDelete(
+                                                        customer.cid
+                                                    )
+                                                }
+                                            >
+                                                Delete
+                                            </button>
+
+                                        </td>
+
+                                    )}
+
+                                </tr>
+
+                            )
+                        )}
+
+                    </tbody>
+
+                </table>
+
+            )}
+
+
+            {/* =========================
+                INITIAL MESSAGE
+            ========================== */}
+
+            {!showAll &&
+                customers.length === 0 &&
+                !message && (
+
+                    <p>
+                        Enter a Customer ID
+                        to search, or click
+                        "View All".
+                    </p>
 
                 )}
 
-            </tbody>
 
-        </table>
+            {/* =========================
+                TOTAL CUSTOMERS
+            ========================== */}
 
-        <p>
-            Total Customers: {totalElements}
-        </p>
+            {customers.length > 0 && (
 
-        <div className="pagination">
+                <p>
+                    Total Customers:{" "}
+                    {totalElements}
+                </p>
 
-            <button
-                onClick={handlePrevious}
-                disabled={currentPage === 0}
-            >
-                Previous
-            </button>
+            )}
 
-            <span>
-                Page {currentPage + 1}
-                {" "}
-                of
-                {" "}
-                {totalPages}
-            </span>
 
-            <button
-                onClick={handleNext}
-                disabled={
-                    currentPage >= totalPages - 1
-                }
-            >
-                Next
-            </button>
+            {/* =========================
+                PAGINATION
+            ========================== */}
+
+            {showAll &&
+                customers.length > 0 && (
+
+                    <div className="pagination">
+
+                        <button
+                            onClick={
+                                handlePrevious
+                            }
+                            disabled={
+                                currentPage === 0
+                            }
+                        >
+                            Previous
+                        </button>
+
+
+                        <span>
+                            Page{" "}
+                            {currentPage + 1}
+                            {" "}
+                            of{" "}
+                            {totalPages}
+                        </span>
+
+
+                        <button
+                            onClick={
+                                handleNext
+                            }
+                            disabled={
+                                currentPage >=
+                                totalPages - 1
+                            }
+                        >
+                            Next
+                        </button>
+
+                    </div>
+
+                )}
 
         </div>
-
-    </div>
-);
+    );
 }
 
 export default CustomerList;
