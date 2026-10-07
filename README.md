@@ -1,62 +1,107 @@
-# Customer Management System
+# CUST_CRUD – Customer Management System
 
-A full-stack **Customer Management System** built using **Spring Boot, React, MySQL, Spring Security, and JWT**. The application provides customer CRUD operations with authentication, role-based authorization, pagination, exception handling, and a responsive web interface.
+A full-stack **Customer Management System** developed using **Spring Boot, React, MySQL, Spring Security, JWT, and Axios**.
+
+The application provides customer CRUD operations, authentication, role-based authorization, pagination, customer search by ID, and exception handling.
 
 ---
 
 ## 📌 Project Overview
 
-The **Customer Management System** is a full-stack web application designed to manage customer information through a simple and secure interface.
+**CUST_CRUD** is a full-stack web application designed to manage customer information in a centralized system.
 
-The system supports two types of users:
+The project is based on a dealership scenario where products are supplied to different customers/dealers and their details need to be maintained regularly.
 
-* **ADMIN** – Can view, add, edit, and delete customers.
-* **USER** – Can only view customer information.
+Instead of maintaining records manually, this application provides a centralized system to store, retrieve, update, and manage customer information.
 
-The backend is developed using **Spring Boot** and exposes REST APIs. The frontend is developed using **React** and communicates with the backend using **Axios**. Customer and user data are stored in **MySQL**.
+### User Roles
+
+- **ADMIN** – Can view, add, edit, and delete customer records.
+- **USER** – Can view and search customer records only.
+
+### Project Modules
+
+- **CUST_CRUD** – Spring Boot Backend
+- **CUST_UI** – React Frontend
+
+Both modules are maintained in the same GitHub repository.
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-### Customer Management
+## 👥 Customer Management
 
-* Create new customers
-* View customer details
-* View all customers
-* Update customer information
-* Delete customers
-* Pagination for customer records
+- Create customer records
+- View all customers
+- Search customer by Customer ID
+- View individual customer details
+- Update customer information
+- Delete customer records
+- Pagination
+- Display customer ID, name, product, price, and quantity
 
-### Authentication & Authorization
+---
 
-* User signup
-* User login
-* Password encryption using BCrypt
-* JWT-based authentication
-* Role-based authorization
-* ADMIN and USER roles
-* Protected API endpoints
+## 🔐 Authentication
 
-### Error Handling
+- User signup
+- User login
+- BCrypt password encryption
+- JWT-based authentication
+- Token-based API authorization
+- JWT token stored in browser Local Storage
+- Automatic JWT attachment using Axios interceptor
 
-* Customer not found handling
-* Unauthorized access handling
-* Forbidden access handling
-* Global exception handling
+---
 
-### Frontend
+## 👮 Role-Based Authorization
 
-* React-based user interface
-* Navigation bar
-* Login and signup pages
-* Customer listing
-* Add customer page
-* Edit customer page
-* Role-based navigation
-* Protected routes
-* Admin-only routes
-* Axios API integration
+### ADMIN
+
+- View customers
+- Search customers
+- View all customers
+- Add customers
+- Edit customers
+- Delete customers
+
+### USER
+
+- View customers
+- Search customers
+- View all customers
+- Cannot add customers
+- Cannot edit customers
+- Cannot delete customers
+
+---
+
+## 🚨 Error Handling
+
+- Customer not found handling
+- `401 Unauthorized` handling
+- `403 Forbidden` handling
+- Global exception handling
+
+---
+
+# 🖥️ Frontend Features
+
+- React-based UI
+- Home page
+- Signup page
+- Login page
+- Customer list
+- Search customer by ID
+- View All customers
+- Pagination
+- Add customer page
+- Edit customer page
+- Protected routes
+- Admin-only actions
+- Axios API integration
+- Login redirects to Home page after successful authentication
 
 ---
 
@@ -64,28 +109,42 @@ The backend is developed using **Spring Boot** and exposes REST APIs. The fronte
 
 ## Backend
 
-| Technology      | Purpose                    |
-| --------------- | -------------------------- |
-| Java            | Programming language       |
-| Spring Boot     | Backend framework          |
-| Spring Data JPA | Database operations        |
-| Hibernate       | ORM                        |
-| Spring Security | Security and authorization |
-| JWT             | Token-based authentication |
-| BCrypt          | Password encryption        |
-| Maven           | Dependency management      |
-| MySQL           | Database                   |
+| Technology | Purpose |
+|---|---|
+| Java | Programming Language |
+| Spring Boot | Backend Framework |
+| Spring MVC | REST API Development |
+| Spring Data JPA | Database Operations |
+| Hibernate | ORM |
+| Spring Security | Authentication & Authorization |
+| JWT | Token-Based Authentication |
+| BCrypt | Password Encryption |
+| Maven | Dependency Management |
+| Lombok | Reduces Boilerplate Code |
 
 ## Frontend
 
-| Technology   | Purpose                  |
-| ------------ | ------------------------ |
-| React        | Frontend UI              |
-| JavaScript   | Programming language     |
-| React Router | Page navigation          |
-| Axios        | API communication        |
-| Vite         | Frontend build tool      |
-| HTML/CSS     | UI structure and styling |
+| Technology | Purpose |
+|---|---|
+| React | Frontend UI |
+| JavaScript | Programming Language |
+| HTML | Page Structure |
+| CSS | Styling |
+| Axios | API Communication |
+| React Router | Page Navigation |
+| Vite | Development Tool |
+
+## Database & Tools
+
+| Technology | Purpose |
+|---|---|
+| MySQL | Database |
+| MySQL Workbench | Database Management |
+| Postman | API Testing |
+| Git | Version Control |
+| GitHub | Code Repository |
+| Eclipse | Backend Development |
+| VS Code | Frontend Development |
 
 ---
 
@@ -96,150 +155,45 @@ The backend is developed using **Spring Boot** and exposes REST APIs. The fronte
                               │
                               ▼
                     ┌─────────────────┐
-                    │   React UI      │
-                    │   Frontend      │
-                    │   Port: 5173    │
+                    │    React UI     │
+                    │     CUST_UI     │
+                    │    Port: 5173   │
                     └────────┬────────┘
                              │
-                             │ Axios
-                             │ REST API
+                             │ Axios / REST API
                              ▼
                     ┌─────────────────┐
                     │   Spring Boot   │
-                    │    Backend      │
-                    │   Port: 9595    │
+                    │    CUST_CRUD    │
+                    │    Port: 9595   │
                     └────────┬────────┘
                              │
-              ┌──────────────┼──────────────┐
-              │              │              │
-              ▼              ▼              ▼
-        ┌──────────┐   ┌───────────┐  ┌──────────┐
-        │Controller│ → │  Service  │→ │Repository│
-        └──────────┘   └───────────┘  └────┬─────┘
-                                            │
-                                            ▼
-                                      ┌───────────┐
-                                      │   MySQL   │
-                                      │ Database  │
-                                      └───────────┘
-```
-
----
-
-# 🔐 Authentication Flow
-
-The application uses **JWT-based authentication**.
-
-```text
-User
- │
- ▼
-Login Page
- │
- │ Email + Password
- ▼
-React Frontend
- │
- │ POST /auth/login
- ▼
-Spring Boot
- │
- ▼
-AuthService
- │
- ▼
-Check User in MySQL
- │
- ▼
-Verify Password using BCrypt
- │
- ▼
-Generate JWT
- │
- ▼
-JWT returned to React
- │
- ▼
-Stored in Local Storage
- │
- ▼
-Axios Interceptor
- │
- │ Authorization: Bearer <JWT>
- ▼
-Protected Backend API
- │
- ▼
-JWT Filter
- │
- ▼
-Validate Token + Extract Role
- │
- ▼
-Spring Security
- │
- ▼
-Allow / Deny Request
-```
-
----
-
-# 👥 Role-Based Authorization
-
-The system uses two roles.
-
-### ADMIN
-
-```text
-ADMIN
- │
- ├── View Customers     ✅
- ├── Add Customer       ✅
- ├── Edit Customer      ✅
- └── Delete Customer    ✅
-```
-
-### USER
-
-```text
-USER
- │
- ├── View Customers     ✅
- ├── Add Customer       ❌
- ├── Edit Customer      ❌
- └── Delete Customer    ❌
-```
-
-The backend is responsible for enforcing these permissions.
-
----
-
-# 🔄 Customer CRUD Flow
-
-```text
-                    Customer Request
-                           │
-                           ▼
-                    React Frontend
-                           │
-                           │ Axios
-                           ▼
-                   Spring Controller
-                           │
-                           ▼
-                    Customer Service
-                           │
-                           ▼
-                    Customer Repository
-                           │
-                           ▼
-                         MySQL
-                           │
-                           ▼
-                    Response to React
-                           │
-                           ▼
-                    Display Result
+                             ▼
+                    ┌─────────────────┐
+                    │ Spring Security │
+                    │   + JWT Filter  │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │   Controller    │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │     Service     │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │    Repository   │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │      MySQL      │
+                    │   crud_cms DB   │
+                    └─────────────────┘
 ```
 
 ---
@@ -319,75 +273,381 @@ SPRING_CRUD_PROJECT/
 │   ├── package.json
 │   └── vite.config.js
 │
+├── screenshots/
+│   ├── home.png
+│   ├── signup.png
+│   ├── login.png
+│   ├── customer-search.png
+│   ├── customer-list.png
+│   ├── add-customer.png
+│   └── edit-customer.png
+│
 ├── .gitignore
 └── README.md
 ```
 
 ---
 
-# ⚙️ Backend Architecture
+# 🔄 Application Flow
+
+After successful login, the user is redirected to the **Home Page**.
+
+```text
+USER
+  ↓
+React Frontend
+  ↓
+Signup / Login
+  ↓
+JWT Token Generated
+  ↓
+Token Stored in Browser
+  ↓
+Home Page
+  ↓
+User navigates to Customers
+  ↓
+Customer Management Page
+  ↓
+User Performs Operation
+  ↓
+Axios Sends Request
+  ↓
+Spring Boot REST Controller
+  ↓
+Service Layer
+  ↓
+Repository Layer
+  ↓
+MySQL Database
+  ↓
+Response Returned
+  ↓
+React UI Displays Result
+```
+
+---
+
+# 🔐 Authentication Flow
+
+The application uses **JWT-based authentication**.
+
+```text
+User
+  ↓
+Login Page
+  ↓
+Email + Password
+  ↓
+React Frontend
+  ↓
+POST /auth/login
+  ↓
+Spring Boot
+  ↓
+AuthService
+  ↓
+Find User in MySQL
+  ↓
+Verify Password using BCrypt
+  ↓
+Generate JWT
+  ↓
+JWT returned to React
+  ↓
+Token stored in Local Storage
+  ↓
+Axios Interceptor
+  ↓
+Authorization: Bearer <JWT>
+  ↓
+JWT Authentication Filter
+  ↓
+Validate Token
+  ↓
+Extract Email + Role
+  ↓
+Spring Security
+  ↓
+Allow / Deny Request
+```
+
+---
+
+# 👥 Role-Based Authorization
+
+## ADMIN
+
+```text
+ADMIN
+ │
+ ├── View Customers       ✅
+ ├── Search by ID         ✅
+ ├── View All             ✅
+ ├── Add Customer         ✅
+ ├── Edit Customer        ✅
+ └── Delete Customer      ✅
+```
+
+## USER
+
+```text
+USER
+ │
+ ├── View Customers       ✅
+ ├── Search by ID         ✅
+ ├── View All             ✅
+ ├── Add Customer         ❌
+ ├── Edit Customer        ❌
+ └── Delete Customer      ❌
+```
+
+---
+
+# 🔎 Search Customer by ID
+
+The application provides a direct search option to find a customer using the Customer ID.
+
+```text
+Find Customer by ID
+
+[ Enter Customer ID ] [ Search ] [ View All ] [ Clear ]
+```
+
+For example:
+
+```text
+Customer ID = 105
+```
+
+The frontend sends:
+
+```http
+GET /getCust/105
+```
+
+## Search Flow
+
+```text
+React
+  ↓
+Axios
+  ↓
+Spring Security
+  ↓
+CustomerController
+  ↓
+CustomerService
+  ↓
+CustomerRepo
+  ↓
+MySQL
+  ↓
+Customer with ID 105
+  ↓
+JSON Response
+  ↓
+React UI
+```
+
+Only the requested customer is displayed.
+
+---
+
+# 📋 View All Customers
+
+Clicking **View All** displays customer records using pagination.
+
+```http
+GET /getCustListPage?page=0&size=5
+```
+
+Example:
+
+```text
+Page 1 of 5
+
+ID    Name       Product       Price     Quantity
+--------------------------------------------------
+1     Dealer A   Product X     ₹500      50
+2     Dealer B   Product Y     ₹600      75
+3     Dealer C   Product Z     ₹450      100
+4     Dealer D   Product A     ₹800      40
+5     Dealer E   Product B     ₹350      60
+```
+
+Navigation:
+
+```text
+[ Previous ]     Page 1 of 5     [ Next ]
+```
+
+The **Clear** button removes the current search/result and returns the customer page to its initial state.
+
+---
+
+# 🔄 Customer CRUD Flow
+
+```text
+Customer Request
+       ↓
+React Frontend
+       ↓
+Axios
+       ↓
+Spring Controller
+       ↓
+Customer Service
+       ↓
+Customer Repository
+       ↓
+MySQL
+       ↓
+JSON Response
+       ↓
+React UI
+```
+
+## Create Customer
+
+```text
+React
+ ↓
+POST /createCust
+ ↓
+Controller
+ ↓
+Service
+ ↓
+Repository
+ ↓
+MySQL
+```
+
+## Get All Customers
+
+```text
+React
+ ↓
+GET /getCustList
+ ↓
+Controller
+ ↓
+Service
+ ↓
+Repository
+ ↓
+MySQL
+```
+
+## Get Customer by ID
+
+```text
+React
+ ↓
+GET /getCust/{cid}
+ ↓
+Controller
+ ↓
+Service
+ ↓
+Repository
+ ↓
+MySQL
+```
+
+## Update Customer
+
+```text
+React
+ ↓
+PUT /updateCust/{cid}
+ ↓
+Controller
+ ↓
+Service
+ ↓
+Repository
+ ↓
+MySQL
+```
+
+## Delete Customer
+
+```text
+React
+ ↓
+DELETE /delCust/{cid}
+ ↓
+Controller
+ ↓
+Service
+ ↓
+Repository
+ ↓
+MySQL
+```
+
+---
+
+# 🏗️ Backend Architecture
 
 The backend follows a layered architecture:
 
 ```text
 Client
-  │
-  ▼
+  ↓
 Controller
-  │
-  ▼
+  ↓
 Service
-  │
-  ▼
+  ↓
 Repository
-  │
-  ▼
-Database
+  ↓
+MySQL
 ```
 
-### Controller
+## Controller
 
-Handles HTTP requests and responses.
+The Controller receives HTTP requests from the React frontend and returns responses.
 
-Examples:
+## Service
 
-```text
-GET
-POST
-PUT
-DELETE
-```
+The Service layer contains the application's business logic.
 
-### Service
+Responsibilities include:
 
-Contains the main business logic.
+- Finding customers
+- Creating customers
+- Updating customers
+- Deleting customers
+- Pagination
 
-### Repository
+## Repository
 
-Communicates with the database using Spring Data JPA.
+The Repository layer communicates with MySQL using **Spring Data JPA**.
 
-### Model
+## Model
 
-Represents database entities such as:
+The Model layer represents database entities.
 
-```text
-Customer
-User
-```
+Main entities:
+
+- `Customer`
+- `User`
 
 ---
 
 # 🗄️ Database
 
-The project uses MySQL.
+The project uses **MySQL**.
 
-Database:
+## Database
 
 ```text
 crud_cms
 ```
 
-Main tables:
+## Customers Table
 
 ```text
 ┌──────────────────┐
@@ -399,8 +659,11 @@ Main tables:
 │ price            │
 │ quantity         │
 └──────────────────┘
+```
 
+## Users Table
 
+```text
 ┌──────────────────┐
 │      users       │
 ├──────────────────┤
@@ -412,13 +675,13 @@ Main tables:
 └──────────────────┘
 ```
 
-Hibernate/JPA automatically creates or updates the required tables using the configured database settings.
+Hibernate/JPA manages the database tables based on the entity classes.
 
 ---
 
 # 🔗 REST API Endpoints
 
-Base URL:
+## Base URL
 
 ```text
 http://localhost:9595
@@ -426,79 +689,21 @@ http://localhost:9595
 
 ## Authentication APIs
 
-### Signup
+| Method | Endpoint | Purpose | Access |
+|---|---|---|---|
+| POST | `/auth/signup` | Register user | Public |
+| POST | `/auth/login` | Login user | Public |
 
-```http
-POST /auth/signup
-```
+## Customer APIs
 
-Example request:
-
-```json
-{
-  "username": "admin",
-  "email": "admin@gmail.com",
-  "password": "admin123",
-  "role": "ADMIN"
-}
-```
-
-### Login
-
-```http
-POST /auth/login
-```
-
-Example request:
-
-```json
-{
-  "email": "admin@gmail.com",
-  "password": "admin123"
-}
-```
-
-The response contains a JWT token.
-
----
-
-# 👤 Customer APIs
-
-### Get all customers
-
-```http
-GET /getCustList
-```
-
-### Get customer by ID
-
-```http
-GET /getCust/{cid}
-```
-
-### Get customers with pagination
-
-```http
-GET /getCustListPage?page=0&size=5
-```
-
-### Create customer
-
-```http
-POST /createCust
-```
-
-### Update customer
-
-```http
-PUT /updateCust/{cid}
-```
-
-### Delete customer
-
-```http
-DELETE /delCust/{cid}
-```
+| Method | Endpoint | Purpose | Access |
+|---|---|---|---|
+| GET | `/getCustList` | Get all customers | ADMIN / USER |
+| GET | `/getCust/{cid}` | Get customer by ID | ADMIN / USER |
+| GET | `/getCustListPage?page=0&size=5` | Get paginated customers | ADMIN / USER |
+| POST | `/createCust` | Create customer | ADMIN |
+| PUT | `/updateCust/{cid}` | Update customer | ADMIN |
+| DELETE | `/delCust/{cid}` | Delete customer | ADMIN |
 
 Protected APIs require:
 
@@ -508,28 +713,11 @@ Authorization: Bearer <JWT_TOKEN>
 
 ---
 
-# 🔒 API Authorization
+# 🔒 Security
 
-| API             | ADMIN | USER |
-| --------------- | :---: | :--: |
-| Signup          |   ✅   |   ✅  |
-| Login           |   ✅   |   ✅  |
-| View Customers  |   ✅   |   ✅  |
-| Get Customer    |   ✅   |   ✅  |
-| Pagination      |   ✅   |   ✅  |
-| Create Customer |   ✅   |   ❌  |
-| Update Customer |   ✅   |   ❌  |
-| Delete Customer |   ✅   |   ❌  |
+## BCrypt Password Encryption
 
----
-
-# 🛡️ Security
-
-The application uses:
-
-### BCrypt
-
-Passwords are not stored as plain text.
+Passwords are encrypted using BCrypt before being stored in MySQL.
 
 ```text
 Password
@@ -541,35 +729,37 @@ Encrypted Password
 MySQL
 ```
 
-### JWT
-
-After successful login:
+## JWT Authentication
 
 ```text
 Email + Password
        ↓
-   Authentication
+Authentication
        ↓
-     JWT Token
+JWT Token
        ↓
-Frontend stores token
+Token stored in browser
        ↓
 Bearer Token
        ↓
 Protected API
+       ↓
+JWT Filter
+       ↓
+Role Validation
 ```
 
-### Spring Security
+## Spring Security
 
-Spring Security checks whether the authenticated user has the required role before allowing protected operations.
+Spring Security validates the JWT and checks the user's role before allowing access to protected endpoints.
 
 ---
 
 # 🚨 Exception Handling
 
-The application includes centralized exception handling.
+The application uses centralized exception handling with `@RestControllerAdvice`.
 
-### 401 Unauthorized
+## 401 Unauthorized
 
 Returned when authentication is missing or invalid.
 
@@ -580,9 +770,9 @@ Returned when authentication is missing or invalid.
 }
 ```
 
-### 403 Forbidden
+## 403 Forbidden
 
-Returned when the user is authenticated but does not have permission.
+Returned when a user is authenticated but does not have permission.
 
 ```json
 {
@@ -591,15 +781,21 @@ Returned when the user is authenticated but does not have permission.
 }
 ```
 
-### 404 Not Found
+## 404 Not Found
 
 Returned when the requested customer does not exist.
+
+Example:
+
+```text
+Customer not found with id: 105
+```
 
 ---
 
 # 📄 Pagination
 
-Customer records are displayed using pagination.
+The customer list supports pagination.
 
 Example:
 
@@ -611,27 +807,21 @@ Flow:
 
 ```text
 React
-  │
-  │ page=0, size=5
-  ▼
+  ↓
+page=0, size=5
+  ↓
 Spring Controller
-  │
-  ▼
+  ↓
 Customer Service
-  │
-  ▼
+  ↓
 PageRequest
-  │
-  ▼
+  ↓
 Repository
-  │
-  ▼
+  ↓
 MySQL
-  │
-  ▼
+  ↓
 Paginated Response
-  │
-  ▼
+  ↓
 React Customer List
 ```
 
@@ -641,7 +831,7 @@ React Customer List
 
 The React frontend communicates with Spring Boot using **Axios**.
 
-Frontend base URL:
+## Backend Base URL
 
 ```text
 http://localhost:9595
@@ -650,81 +840,80 @@ http://localhost:9595
 Example:
 
 ```javascript
-api.get("/getCustList");
+api.get("/getCustListPage?page=0&size=5");
 ```
 
-The Axios interceptor automatically attaches the JWT:
+The Axios interceptor automatically adds the JWT token:
 
-```text
+```http
 Authorization: Bearer <JWT>
 ```
 
-Therefore, protected requests can be authenticated by the Spring Boot backend.
-
 ---
 
-# 🔄 Complete Application Flow
+# 🖥️ Frontend Pages
 
 ```text
-                     USER
-                      │
-                      ▼
-                React Frontend
-                      │
-          ┌───────────┴───────────┐
-          │                       │
-          ▼                       ▼
-       Signup                   Login
-          │                       │
-          │                       ▼
-          │                 JWT Generated
-          │                       │
-          │                       ▼
-          │                 Token Stored
-          │                       │
-          └───────────┬───────────┘
-                      │
-                      ▼
-                 Customer Page
-                      │
-                      ▼
-                 Axios Request
-                      │
-                      ▼
-               JWT Authentication
-                      │
-                      ▼
-               Spring Security
-                      │
-              ┌───────┴───────┐
-              │               │
-            ADMIN            USER
-              │               │
-              ▼               ▼
-       CRUD Operations     View Only
-              │               │
-              └───────┬───────┘
-                      ▼
-                  MySQL
+Home
+ │
+ ├── Signup
+ │
+ ├── Login
+ │
+ └── Customers
+       │
+       ├── Search Customer by ID
+       │
+       ├── View All Customers
+       │
+       ├── Add Customer       → ADMIN
+       │
+       └── Edit Customer      → ADMIN
 ```
+
+### Login Navigation
+
+```text
+Login
+  ↓
+Successful Authentication
+  ↓
+JWT Stored
+  ↓
+Home Page
+  ↓
+Customers
+```
+
+### Customer Page
+
+The customer page initially displays:
+
+```text
+Find Customer by ID
+
+[ Enter Customer ID ] [ Search ] [ View All ] [ Clear ]
+```
+
+The customer table is displayed after:
+
+- Searching for a customer by ID
+- Clicking **View All**
 
 ---
 
 # 🚀 Setup & Installation
 
-## 1. Clone the repository
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/RuthvikAnupati/Customer_CRUD.git
-```
-
-```bash
 cd Customer_CRUD
 ```
 
 ---
 
-# 2. Database Setup
+## 2. Database Setup
 
 Install and start MySQL.
 
@@ -734,7 +923,7 @@ Create the database:
 CREATE DATABASE crud_cms;
 ```
 
-Configure the database connection in:
+Configure:
 
 ```text
 CUST_CRUD/src/main/resources/application.properties
@@ -761,23 +950,21 @@ YOUR_MYSQL_PASSWORD
 
 with your local MySQL password.
 
+Hibernate/JPA will manage the required tables based on the entity classes.
+
 ---
 
-# 3. Run Backend
+# ▶️ Run Backend
 
-Open the backend:
+Open the `CUST_CRUD` project in **Eclipse**.
 
-```text
-CUST_CRUD
-```
-
-Run the Spring Boot application:
+Run:
 
 ```text
 CustCrudApplication.java
 ```
 
-The backend runs on:
+Backend URL:
 
 ```text
 http://localhost:9595
@@ -785,9 +972,11 @@ http://localhost:9595
 
 ---
 
-# 4. Run Frontend
+# ▶️ Run Frontend
 
-Open another terminal:
+Open the `CUST_UI` folder in **VS Code**.
+
+Open the terminal:
 
 ```bash
 cd CUST_UI
@@ -799,13 +988,13 @@ Install dependencies:
 npm install
 ```
 
-Start the React application:
+Run the application:
 
 ```bash
 npm run dev
 ```
 
-The frontend runs on:
+Frontend URL:
 
 ```text
 http://localhost:5173
@@ -815,122 +1004,288 @@ http://localhost:5173
 
 # 🧪 Testing
 
-The REST APIs can be tested using **Postman**.
+REST APIs can be tested using **Postman**.
 
-Recommended testing flow:
+## Recommended Testing Flow
 
 ```text
 1. Signup
       ↓
 2. Login
       ↓
-3. Copy JWT
+3. Get JWT Token
       ↓
-4. Add Bearer Token
+4. Set Bearer Token
       ↓
 5. Get Customers
       ↓
-6. Create Customer (ADMIN)
+6. Search Customer by ID
       ↓
-7. Update Customer (ADMIN)
+7. View All Customers
       ↓
-8. Delete Customer (ADMIN)
+8. Create Customer - ADMIN
       ↓
-9. Test USER permissions
+9. Update Customer - ADMIN
+      ↓
+10. Delete Customer - ADMIN
+      ↓
+11. Test USER Permissions
+      ↓
+12. Test Unauthorized Requests
+```
+
+## Security Testing
+
+The following scenarios were tested:
+
+- ADMIN signup/login
+- USER signup/login
+- JWT-protected APIs
+- Customer CRUD
+- Customer search by ID
+- Pagination
+- USER view-only access
+- USER denied create/update/delete
+- Request without JWT → `401 Unauthorized`
+- Authenticated USER performing ADMIN operation → `403 Forbidden`
+- Customer not found → `404 Not Found`
+- CORS configuration
+
+---
+
+# 🔧 Git & GitHub
+
+The backend and frontend are maintained in **one GitHub repository**.
+
+```text
+SPRING_CRUD_PROJECT/
+│
+├── CUST_CRUD       → Spring Boot Backend
+├── CUST_UI         → React Frontend
+├── screenshots/
+├── README.md
+└── .gitignore
+```
+
+## Development Environment
+
+- Backend → **Eclipse**
+- Frontend → **VS Code**
+- Database → **MySQL**
+- API Testing → **Postman**
+
+## GitHub Repository
+
+```text
+https://github.com/RuthvikAnupati/Customer_CRUD
 ```
 
 ---
 
-# 🖥️ Application Screens
+## Backend Update Workflow
 
-Add your project screenshots here after uploading them to GitHub.
-
-Example:
-
-```markdown
-## 📸 Screenshots
-
-### Home Page
-![Home Page](screenshots/home.png)
-
-### Login Page
-![Login Page](screenshots/login.png)
-
-### Customer List
-![Customer List](screenshots/customers.png)
-
-### Add Customer
-![Add Customer](screenshots/add-customer.png)
-```
-
-Recommended screenshot folder:
+Backend changes are handled from Eclipse.
 
 ```text
-Customer_CRUD/
-│
-├── CUST_CRUD/
-├── CUST_UI/
-├── screenshots/
-│   ├── home.png
-│   ├── login.png
-│   ├── signup.png
-│   ├── customers.png
-│   └── add-customer.png
-│
-└── README.md
+Eclipse
+   ↓
+Modify Backend
+   ↓
+Git Staging
+   ↓
+Stage CUST_CRUD Changes
+   ↓
+Commit
+   ↓
+Push
 ```
+
+Only backend files should be staged when making a backend-only commit.
+
+---
+
+## Frontend Update Workflow
+
+Frontend changes are handled from VS Code.
+
+When the terminal is inside `CUST_UI`:
+
+```bash
+git status
+git add .
+git commit -m "Update frontend"
+git push
+```
+
+Since the Git repository is located in the parent folder, Git tracks the frontend and backend as part of the same repository.
+
+---
+
+# 📸 Screenshots
+
+## 🏠 Home Page
+
+![Home Page](screenshots/HOME.png)
+
+## 👤 Admin Home Page
+
+![Admin Home Page](screenshots/ADMIN_HOME.png)
+
+## 👤 User Home Page
+
+![User Home Page](screenshots/USER_HOME.png)
+
+## 📝 Signup Page
+
+![Signup Page](screenshots/SIGNUP.png)
+
+## 🔐 Login Page
+
+![Login Page](screenshots/LOGIN.png)
+
+## 📋 Admin Customer List
+
+![Admin Customer List](screenshots/ADMIN_CUSTOMERLIST_VIEW.png)
+
+## 👀 User Customer List
+
+![User Customer List](screenshots/USER_CUSTOMERLIST_VIEW.png)
+
+## 🔎 Search Customer by ID
+
+![Search Customer by ID](screenshots/SEARCH_BY_ID.png)
+
+## ➕ Add Customer
+
+![Add Customer](screenshots/ADD_CUSTOMER.png)
+
+## ✏️ Edit Customer
+
+![Edit Customer](screenshots/EDIT.png)
+
+## 🗑️ Delete Customer
+
+![Delete Customer](screenshots/DELETE.png)
 
 ---
 
 # 📌 Project Highlights
 
-* Full-stack Customer Management application
-* RESTful API-based backend
-* React-based frontend
-* MySQL database integration
-* CRUD operations
-* JWT authentication
-* Role-based authorization
-* BCrypt password encryption
-* Pagination
-* Global exception handling
-* Protected frontend routes
-* Axios API integration
-* CORS configuration
+- Full-stack Customer Management System
+- Spring Boot REST API
+- React frontend
+- MySQL database
+- Customer CRUD operations
+- Search customer by ID
+- View All customers
+- Pagination
+- JWT authentication
+- Spring Security
+- Role-based authorization
+- BCrypt password encryption
+- Global exception handling
+- Protected frontend routes
+- Admin-only customer management
+- Axios API integration
+- Postman API testing
+- Git and GitHub version control
+- Separate backend and frontend development environments
+- Backend developed using Eclipse
+- Frontend developed using VS Code
 
 ---
 
 # 🎯 Learning Outcomes
 
-Through this project, the following concepts were implemented:
+This project provided practical experience with:
 
-* Spring Boot application development
-* REST API development
-* Spring Data JPA
-* Hibernate
-* MySQL database connectivity
-* CRUD operations
-* React components and state management
-* React Router
-* Axios
-* JWT authentication
-* Spring Security
-* Role-based authorization
-* Exception handling
-* API testing using Postman
-* Git and GitHub version control
+- Java
+- Spring Boot
+- REST API Development
+- Spring MVC
+- Spring Data JPA
+- Hibernate
+- MySQL
+- CRUD Operations
+- React
+- React Router
+- Axios
+- JWT Authentication
+- Spring Security
+- BCrypt
+- Role-Based Authorization
+- Exception Handling
+- Pagination
+- Postman API Testing
+- Git and GitHub
 
 ---
 
-# 👨‍💻 Author
+# 📜 Conclusion
+
+**CUST_CRUD** demonstrates a complete full-stack Customer Management System by integrating **React, Spring Boot, Spring Security, JWT, JPA/Hibernate, and MySQL**.
+
+The application provides a centralized way to manage customer records with:
+
+- CRUD operations
+- Customer search by ID
+- View All functionality
+- Pagination
+- Authentication
+- Role-based authorization
+- Exception handling
+
+The application follows a layered backend architecture and separates the frontend and backend responsibilities while maintaining both modules in a single GitHub repository.
+
+## Complete Application Flow
+
+```text
+User
+  ↓
+React Frontend
+  ↓
+Signup / Login
+  ↓
+JWT Authentication
+  ↓
+Home Page
+  ↓
+Customer Management
+  ↓
+Axios API Request
+  ↓
+Spring Security
+  ↓
+Controller
+  ↓
+Service
+  ↓
+Repository
+  ↓
+MySQL
+  ↓
+JSON Response
+  ↓
+React UI
+```
+
+---
+
+# 👤 Author
 
 **Ruthvik Reddy Anupati**
 
-GitHub:
-[https://github.com/RuthvikAnupati](https://github.com/RuthvikAnupati)
+**Project:** CUST_CRUD – Customer Management System
+
+**GitHub:**
+
+```text
+https://github.com/RuthvikAnupati/Customer_CRUD
+```
 
 ---
 
 # 📄 License
 
 This project is created for **learning and educational purposes**.
+```
